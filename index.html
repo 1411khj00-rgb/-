@@ -2,9 +2,15 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#2B3A67">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="레슨">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>보컬 레슨 운영</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
@@ -22,14 +28,16 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{font-family:'Pretendard',-apple-system,'Apple SD Gothic Neo',system-ui,sans-serif;
-     background:#E9EDF3;color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+     background:#E9EDF3;color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+     -webkit-text-size-adjust:100%;overscroll-behavior-y:none}
+button,a,.item,.lrow,.tabbar button{touch-action:manipulation}
 button,input,select,textarea{font:inherit;color:inherit}
 button{cursor:pointer;background:none;border:none}
 [hidden]{display:none!important}
 :focus-visible{outline:2px solid var(--navy);outline-offset:2px;border-radius:6px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 
-.app{max-width:var(--w);margin:0 auto;min-height:100vh;background:var(--bg);
+.app{max-width:var(--w);margin:0 auto;min-height:100vh;min-height:100dvh;background:var(--bg);
      padding-bottom:calc(84px + env(safe-area-inset-bottom));position:relative;
      box-shadow:0 0 0 1px rgba(21,26,45,.06)}
 .pad{padding:0 18px}
@@ -131,7 +139,7 @@ header{position:sticky;top:0;z-index:30;background:rgba(243,245,249,.94);backdro
 .st.s연기{background:var(--amber-soft);color:var(--amber)}
 .st.s노쇼{background:var(--rose-soft);color:var(--rose)}
 .st.s취소{background:var(--line2);color:var(--ink3);text-decoration:line-through}
-.ck{width:30px;height:30px;border-radius:50%;border:1.5px solid var(--line);color:var(--ink3);font-size:14px;display:grid;place-items:center;flex:none}
+.ck{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--line);color:var(--ink3);font-size:15px;display:grid;place-items:center;flex:none}
 .ck:active{background:var(--mint);border-color:var(--mint);color:#fff}
 .lrow.done .nm{color:var(--ink2)}
 .lrow.cancel .nm{color:var(--ink3);text-decoration:line-through}
@@ -156,9 +164,9 @@ header{position:sticky;top:0;z-index:30;background:rgba(243,245,249,.94);backdro
 .fld:last-child{border-bottom:none}
 .fld > label{display:block;font-size:12.5px;font-weight:700;color:var(--ink2);margin-bottom:7px}
 .fld .hint{font-size:11.5px;color:var(--ink3);margin-top:7px;line-height:1.6}
-input[type=text],input[type=date],input[type=number],select,textarea{
-  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:15px;
-  -webkit-appearance:none;appearance:none}
+input,select,textarea{
+  width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);
+  font-size:16px;-webkit-appearance:none;appearance:none}
 select{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' fill='none' stroke='%2398A0B5' stroke-width='1.6' stroke-linecap='round'/></svg>");
         background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--navy-soft)}
@@ -181,7 +189,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);bo
 .tabbar button[aria-selected="true"]{color:var(--navy)}
 
 .scrim{position:fixed;inset:0;background:rgba(21,26,45,.45);z-index:100;display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--card);width:100%;max-width:var(--w);border-radius:22px 22px 0 0;max-height:92vh;
+.sheet{background:var(--card);width:100%;max-width:var(--w);border-radius:22px 22px 0 0;max-height:92vh;max-height:92dvh;
        overflow-y:auto;-webkit-overflow-scrolling:touch;animation:up .22s cubic-bezier(.2,.8,.3,1);
        padding-bottom:env(safe-area-inset-bottom)}
 @keyframes up{from{transform:translateY(20px)}to{transform:none}}
@@ -211,7 +219,17 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);bo
 .nextbox .hint{font-size:11.5px;color:#5D6B90;margin-top:8px;text-align:center}
 
 .gate{position:fixed;inset:0;z-index:300;background:var(--bg);display:flex;align-items:center;
-      justify-content:center;padding:24px}
+      justify-content:center;padding:24px calc(24px + env(safe-area-inset-left)) calc(24px + env(safe-area-inset-bottom))}
+.boot{position:fixed;inset:0;z-index:290;background:var(--bg);display:flex;align-items:center;justify-content:center}
+.boot i{width:26px;height:26px;border:2.5px solid var(--line);border-top-color:var(--navy);
+        border-radius:50%;display:block;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sdot{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--ink3);white-space:nowrap}
+.sdot i{width:7px;height:7px;border-radius:50%;background:var(--ink3);display:block}
+.sdot.saving i{background:var(--amber)}
+.sdot.saved{color:var(--mint)} .sdot.saved i{background:var(--mint)}
+.sdot.error{color:var(--rose)} .sdot.error i{background:var(--rose)}
+.offbar{background:var(--rose);color:#fff;font-size:12px;font-weight:700;text-align:center;padding:7px 12px}
 .gate-box{width:100%;max-width:340px}
 .gate-box h2{font-size:22px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
 .gate-box p{font-size:13px;color:var(--ink3);margin-bottom:22px}
@@ -227,9 +245,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);bo
 </head>
 <body>
 <div class="app">
+  <div class="offbar" id="offbar" hidden>인터넷 연결이 끊겼습니다. 연결되면 자동으로 저장됩니다.</div>
   <header>
     <div class="hrow">
       <h1 id="pgTitle">시간표</h1>
+      <span class="sdot" id="sdot" hidden><i></i><b id="sdotTxt"></b></span>
       <span class="chip" id="pgChip">—</span>
       <button class="iconbtn" id="btnSettings" aria-label="설정">⚙</button>
     </div>
@@ -394,6 +414,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);bo
     <button role="tab" data-tab="students" aria-selected="false"><span class="i">☺</span>수강생</button>
   </nav>
 </div>
+
+<div class="boot" id="bootv"><i></i></div>
 
 <div class="gate" id="gate" hidden>
   <div class="gate-box">
@@ -676,11 +698,38 @@ function buildIndex(){
   return {byLesson,byStudent,cycles:flat};
 }
 
-let saveT=null;
-const save=()=>{clearTimeout(saveT);saveT=setTimeout(()=>Store.set(S),200);scheduleSync()};
+let saveT=null, sdotT=null, pending=false;
+function setSave(state){
+  const d=document.getElementById('sdot'), t=document.getElementById('sdotTxt');
+  clearTimeout(sdotT);
+  if(!state){d.hidden=true;return}
+  d.hidden=false; d.className='sdot '+state;
+  t.textContent=state==='saving'?'저장 중':(state==='saved'?'저장됨':'저장 안 됨');
+  if(state==='saved')sdotT=setTimeout(()=>{d.hidden=true},1600);
+}
+async function flush(){
+  if(!SESS)return;
+  setSave('saving'); pending=false;
+  try{ await Store.set(S); setSave('saved') }
+  catch(err){ pending=true; setSave('error') }
+}
+const save=()=>{clearTimeout(saveT);saveT=setTimeout(flush,250);scheduleSync()};
+
+window.addEventListener('online',()=>{
+  document.getElementById('offbar').hidden=true;
+  if(pending)flush();
+});
+window.addEventListener('offline',()=>{
+  document.getElementById('offbar').hidden=false;
+});
+document.addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&pending)flush();
+});
 function newId(p){return uid()}
 
+function hideBoot(){const b=document.getElementById('bootv'); if(b)b.hidden=true}
 function showGate(msg){
+  hideBoot();
   const g=document.getElementById('gate');
   g.hidden=false;
   document.getElementById('gMsg').textContent=msg||'';
@@ -698,7 +747,7 @@ async function loadAll(){
   S.settings=Object.assign({},DEFAULTS.settings,S.settings||{});
   S.settings.per=Object.assign({},DEFAULTS.settings.per,S.settings.per||{});
   S.students.forEach(x=>{if(x.carry===undefined)x.carry=0; if(!x.resets)x.resets=[]});
-  hideGate(); renderAll(); return true;
+  hideGate(); hideBoot(); renderAll(); return true;
 }
 
 async function boot(){
@@ -709,6 +758,7 @@ async function boot(){
   fillTimeRange();
   S=JSON.parse(JSON.stringify(DEFAULTS));
   IDX=buildIndex();
+  if(!navigator.onLine)document.getElementById('offbar').hidden=false;
   const ok=await sbRestore();
   if(ok)await loadAll(); else showGate();
 }
@@ -738,6 +788,7 @@ function go(tab){
 }
 document.querySelector('.tabbar').onclick=e=>{const b=e.target.closest('button[data-tab]');if(b)go(b.dataset.tab)};
 document.getElementById('btnSettings').onclick=()=>go(TAB==='settings'?'schedule':'settings');
+document.getElementById('sdot').onclick=()=>{if(pending)flush()};
 
 function lessonsIn(f,t){const a=ymd(f),b=ymd(t);return S.lessons.filter(l=>l.date>=a&&l.date<=b).sort(byTime)}
 const cyclesIn=(f,t)=>{const a=ymd(f),b=ymd(t);return IDX.cycles.filter(c=>c.date>=a&&c.date<=b)};
